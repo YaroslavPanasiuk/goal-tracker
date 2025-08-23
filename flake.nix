@@ -43,6 +43,10 @@ EOF
           fi
         '';
 
+        nativeBuildInputs = [
+          pkgs.wrapGAppsHook3
+        ];
+
         propagatedBuildInputs = with python.pkgs; [
           pygobject3
         ] ++ [
