@@ -41,23 +41,23 @@
             mkdir -p $out/share/applications
             cp ${./goal-tracker.desktop} $out/share/applications/
 
-            #mkdir -p $out/share/icons/hicolor/16x$16/apps
-            #cp ${./icons/16x16.png} $out/share/icons/hicolor/16x16/apps/goal-tracker.png
+            mkdir -p $out/share/icons/hicolor/16x16/apps
+            cp ${./icons/16x16.png} $out/share/icons/hicolor/16x16/apps/goal-tracker.png
 
-            #mkdir -p $out/share/icons/hicolor/24x$24/apps
-            #cp ${./icons/24x24.png} $out/share/icons/hicolor/24x24/apps/goal-tracker.png
+            mkdir -p $out/share/icons/hicolor/24x24/apps
+            cp ${./icons/24x24.png} $out/share/icons/hicolor/24x24/apps/goal-tracker.png
 
-            #mkdir -p $out/share/icons/hicolor/32x$32/apps
-            #cp ${./icons/32x32.png} $out/share/icons/hicolor/32x32/apps/goal-tracker.png
+            mkdir -p $out/share/icons/hicolor/32x32/apps
+            cp ${./icons/32x32.png} $out/share/icons/hicolor/32x32/apps/goal-tracker.png
 
-            #mkdir -p $out/share/icons/hicolor/64x$64/apps
-            #cp ${./icons/64x64.png} $out/share/icons/hicolor/64x64/apps/goal-tracker.png
+            mkdir -p $out/share/icons/hicolor/64x64/apps
+            cp ${./icons/64x64.png} $out/share/icons/hicolor/64x64/apps/goal-tracker.png
 
-            #mkdir -p $out/share/icons/hicolor/128x$128/apps
-            #cp ${./icons/128x128.png} $out/share/icons/hicolor/128x128/apps/goal-tracker.png
+            mkdir -p $out/share/icons/hicolor/128x128/apps
+            cp ${./icons/128x128.png} $out/share/icons/hicolor/128x128/apps/goal-tracker.png
 
-            #mkdir -p $out/share/icons/hicolor/256x$256/apps
-            #cp ${./icons/256x256.png} $out/share/icons/hicolor/256x256/apps/goal-tracker.png
+            mkdir -p $out/share/icons/hicolor/256x256/apps
+            cp ${./icons/256x256.png} $out/share/icons/hicolor/256x256/apps/goal-tracker.png
 
             runHook postInstall
           '';

@@ -62,10 +62,16 @@ class ProgressBarWindow(Gtk.Window):
         self.tasks = []
         self.task_id_counter = 1
 
+
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_vexpand(True)
+
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
         vbox.set_name("main_vbox")
         vbox.set_halign(Gtk.Align.FILL)
         vbox.set_valign(Gtk.Align.START)
+        scrolled_window.add(vbox)
+        self.add(scrolled_window)
 
         self.tasks_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
         self.tasks_container.set_halign(Gtk.Align.FILL)
@@ -78,7 +84,6 @@ class ProgressBarWindow(Gtk.Window):
         add_task_box.set_halign(Gtk.Align.START)
         add_task_box.pack_start(add_task_button, False, False, 0)
         vbox.pack_start(add_task_box, False, False, 0)
-        self.add(vbox)
 
         self.load_tasks_from_json()
 
@@ -216,6 +221,7 @@ class ProgressBarWindow(Gtk.Window):
 
         date_time_label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         date_time_label_box.set_halign(Gtk.Align.END)
+        date_time_label_box.set_name("date_time_label_box")
         datetime_label = Gtk.Label(label="")
         datetime_label.set_name("datetime_label")
         datetime_label_event_box = Gtk.EventBox()
