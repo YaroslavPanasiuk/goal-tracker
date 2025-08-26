@@ -110,21 +110,22 @@ class ProgressBarWindow(Gtk.Window):
             progressbar_time.set_text("0.00%")
         return True  # Continue calling
 
-    def update_progressbar_progress(self, progressbar_progress, entries):
+    def update_progressbar_progress(self, progressbar_progress, entries, progress_label):
         try:
             current_progress_entry, goal_entry = entries
             current_value = int(current_progress_entry.get_text())
             goal_value = int(goal_entry.get_text())
         except ValueError:
             progressbar_progress.set_fraction(0)
+            progress_label.set_text("")
             return True
         if goal_value == 0:
             progressbar_progress.set_fraction(1)
-            progressbar_progress.set_text("100%")
+            progress_label.set_text("100%")
             return True
         fraction = max(0, min(1, current_value / goal_value))
         progressbar_progress.set_fraction(fraction)
-        progressbar_progress.set_text(f"{fraction*100:.2f}%")
+        progress_label.set_text(f"{fraction*100:.2f}%")
         return True  # Continue calling
     
     def on_datetime_entry_changed(self, entries, datetime_label):
@@ -219,17 +220,31 @@ class ProgressBarWindow(Gtk.Window):
         self.calendar = Gtk.Calendar()
         now = datetime.now()
 
+        labels_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        labels_box.set_halign(Gtk.Align.FILL)
+
         date_time_label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         date_time_label_box.set_halign(Gtk.Align.END)
         date_time_label_box.set_name("date_time_label_box")
         datetime_label = Gtk.Label(label="")
         datetime_label.set_name("datetime_label")
+
+        progress_label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        progress_label_box.set_halign(Gtk.Align.START)
+        progress_label_box.set_name("progress_label_box")
+        progress_label = Gtk.Label(label="")
+        progress_label.set_name("progress_label")
+
         datetime_label_event_box = Gtk.EventBox()
         datetime_label_event_box.add(datetime_label)
         datetime_label_event_box.set_tooltip_text("Click to set time margins")
         datetime_label_event_box.connect("button-press-event", lambda w, e: self.toggle_datetime_visibility(date_time_box))
+        
+        progress_label_box.pack_start(progress_label, False, False, 0)
         date_time_label_box.pack_start(datetime_label_event_box, False, False, 0)
-        progressbar_box.pack_end(date_time_label_box, False, False, 0)
+        labels_box.pack_start(progress_label_box, False, False, 0)
+        labels_box.pack_end(date_time_label_box, False, False, 0)
+        progressbar_box.pack_end(labels_box, False, False, 0)
 
         time_entries = ()
         start_date_entry = Gtk.Entry()
@@ -277,6 +292,7 @@ class ProgressBarWindow(Gtk.Window):
         
         goal_entry = Gtk.Entry()
         current_progress_entry = Gtk.Entry()
+
         current_progress_entry.set_name("entry")
         progress_entries = (current_progress_entry, goal_entry)
         current_progress_entry.set_text(progress)
@@ -284,7 +300,7 @@ class ProgressBarWindow(Gtk.Window):
         progress_box_start.pack_start(Gtk.Label(label="Current progress:"), False, False, 0)
         progress_box_start.pack_start(current_progress_entry, False, False, 0)
         progress_box.pack_start(progress_box_start, True, True, 0)
-        current_progress_entry.connect("changed", lambda w: self.update_progressbar_progress(progressbar_progress, progress_entries))
+        current_progress_entry.connect("changed", lambda w: self.update_progressbar_progress(progressbar_progress, progress_entries, progress_label))
 
         goal_entry.set_text(goal)
         goal_entry.set_name("entry")
@@ -298,7 +314,7 @@ class ProgressBarWindow(Gtk.Window):
 
         progress_box.pack_start(time_left_label, True, True, 0)
 
-        goal_entry.connect("changed", lambda w: self.update_progressbar_progress(progressbar_progress, progress_entries))
+        goal_entry.connect("changed", lambda w: self.update_progressbar_progress(progressbar_progress, progress_entries, progress_label))
         task_box.pack_start(progress_box, False, False, 0)
         current_progress_entry.grab_focus()
         
@@ -328,7 +344,7 @@ class ProgressBarWindow(Gtk.Window):
         self.tasks_container.pack_start(task_box, True, True, 0)
         self.tasks_container.show_all()
 
-        self.update_progressbar_progress(progressbar_progress, progress_entries)
+        self.update_progressbar_progress(progressbar_progress, progress_entries, progress_label)
         self.update_progressbar_time(progressbar_time, time_left_label, time_entries)
         GLib.timeout_add(1000, lambda: self.update_progressbar_time(progressbar_time, time_left_label, time_entries))
 
